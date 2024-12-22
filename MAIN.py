@@ -38,6 +38,10 @@ def srart_btns():
             btns.append(btn)
 
 
+def f(n):
+    pass
+
+
 if __name__ == "__main__":
     pygame.init()
     size = pygame.display.Info()
