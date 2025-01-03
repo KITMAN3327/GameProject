@@ -19,10 +19,13 @@ def running_mw():
                 if main_btns[0].x <= x_pos <= (main_btns[0].x + main_btns[0].width):
                     if main_btns[0].y <= y_pos <= (main_btns[0].y + main_btns[0].height):
                         running = False
-                if main_btns[-1].x <= x_pos <= (main_btns[-1].x + main_btns[-1].width):
                     if main_btns[-1].y <= y_pos <= (main_btns[-1].y + main_btns[-1].height):
                         running = False
                         flag_exit = 1
+                        flag = 1
+                else:
+                    for elem in main_btns:
+                        elem.draw()
             if flag == 0:
                 if event.type == pygame.MOUSEMOTION:
                     x_pos, y_pos = pygame.mouse.get_pos()
