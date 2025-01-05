@@ -46,7 +46,7 @@ def running_mw():
     if flag_exit == 1:
         pygame.quit()
     else:
-        blackout_main_screen()
+        blackout(1)
 
 
 def running_sw():
@@ -85,12 +85,12 @@ def running_sw():
                         elem.change_col_push()
         pygame.display.flip()
     if lvl_switch == 0:
-        blackout_start_screen()
+        blackout(0)
     elif lvl_switch == 1:
-        game_run_1()
+        blackout(2)
 
 
-def blackout_main_screen():
+def blackout(k):
     alpha = 0
     fade_speed = 5
     overlay = pygame.Surface(size)
@@ -102,22 +102,12 @@ def blackout_main_screen():
             alpha += fade_speed
         pygame.display.flip()
         pygame.time.delay(30)
-    running_sw()
-
-
-def blackout_start_screen():
-    alpha = 0
-    fade_speed = 5
-    overlay = pygame.Surface(size)
-    overlay.fill("black")
-    while screen.get_at((0, 0)) != (0, 0, 0):
-        overlay.set_alpha(alpha)
-        screen.blit(overlay, (0, 0))
-        if alpha < 255:
-            alpha += fade_speed
-        pygame.display.flip()
-        pygame.time.delay(30)
-    running_mw()
+    if k == 0:
+        running_mw()
+    elif k == 1:
+        running_sw()
+    elif k == 2:
+        game_run_1(screen)
 
 
 def srart_btns():
