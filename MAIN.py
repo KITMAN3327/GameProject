@@ -44,7 +44,7 @@ def running_mw():
     if flag_exit == 1:
         pygame.quit()
     else:
-        running_sw()
+        blackout_main_screen()
 
 
 def running_sw():
@@ -77,6 +77,36 @@ def running_sw():
                     if elem.x <= x_pos <= elem.x + elem.width and elem.y <= y_pos <= elem.y + elem.height:
                         elem.change_col_push()
         pygame.display.flip()
+    blackout_start_screen()
+
+
+def blackout_main_screen():
+    alpha = 0
+    fade_speed = 5
+    overlay = pygame.Surface(size)
+    overlay.fill("black")
+    while screen.get_at((0, 0)) != (0, 0, 0):
+        overlay.set_alpha(alpha)
+        screen.blit(overlay, (0, 0))
+        if alpha < 255:
+            alpha += fade_speed
+        pygame.display.flip()
+        pygame.time.delay(30)
+    running_sw()
+
+
+def blackout_start_screen():
+    alpha = 0
+    fade_speed = 5
+    overlay = pygame.Surface(size)
+    overlay.fill("black")
+    while screen.get_at((0, 0)) != (0, 0, 0):
+        overlay.set_alpha(alpha)
+        screen.blit(overlay, (0, 0))
+        if alpha < 255:
+            alpha += fade_speed
+        pygame.display.flip()
+        pygame.time.delay(30)
     running_mw()
 
 
