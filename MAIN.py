@@ -1,4 +1,6 @@
 import pygame
+from Vsyakya import *
+from Level_1 import *
 
 main_btns = list()
 levels_btns = list()
@@ -8,7 +10,7 @@ def running_mw():
     flag_exit = 0
     flag = 0
     screen.fill("black")
-    background_image("MainBack.jpg", size)
+    background_image_menu("MainBack.jpg", size, screen)
     srart_btns()
     running = True
     while running:
@@ -48,9 +50,10 @@ def running_mw():
 
 
 def running_sw():
+    lvl_switch = 0
     flag = 0
     screen.fill("black")
-    background_image("StartBack.jpg", size)
+    background_image_menu("StartBack.jpg", size, screen)
     lvls_btns()
     lvls_back_btn()
     running = True
@@ -59,6 +62,10 @@ def running_sw():
             if event.type == pygame.MOUSEBUTTONUP:
                 flag = 0
                 x_pos, y_pos = pygame.mouse.get_pos()
+                if levels_btns[0].x <= x_pos <= (levels_btns[0].x + levels_btns[0].width):
+                    if levels_btns[0].y <= y_pos <= (levels_btns[0].y + levels_btns[0].height):
+                        running = False
+                        lvl_switch = 1
                 if levels_btns[-1].x <= x_pos <= (levels_btns[-1].x + levels_btns[-1].width):
                     if levels_btns[-1].y <= y_pos <= (levels_btns[-1].y + levels_btns[-1].height):
                         running = False
@@ -77,7 +84,10 @@ def running_sw():
                     if elem.x <= x_pos <= elem.x + elem.width and elem.y <= y_pos <= elem.y + elem.height:
                         elem.change_col_push()
         pygame.display.flip()
-    blackout_start_screen()
+    if lvl_switch == 0:
+        blackout_start_screen()
+    elif lvl_switch == 1:
+        game_run_1()
 
 
 def blackout_main_screen():
@@ -122,7 +132,7 @@ def srart_btns():
             txt = "Settings"
         else:
             txt = "Exit"
-        btn = Buttons(x, (z + 2) * gap + z * height, width, height, screen, txt)
+        btn = Buttons(x, (z + 2) * gap + z * height, width, height, txt)
         btn.draw()
         main_btns.append(btn)
 
@@ -135,31 +145,25 @@ def lvls_btns():
             width, height = 150, 100
             gap_x = (size[0] - width * 5) / 8
             gap_y = (size[1] - height * 3 - 75) / 5
-            btn = Buttons((x + 2) * gap_x + x * width, (y + 2) * gap_y + y * height - 70, width, height, screen, str(k))
+            btn = Buttons((x + 2) * gap_x + x * width, (y + 2) * gap_y + y * height - 70, width, height, str(k))
             btn.draw()
             levels_btns.append(btn)
 
 
 def lvls_back_btn():
     width, height = 450, 100
-    btn = Buttons((size[0] - width) / 2, size[1] - 200, width, height, screen, "Back")
+    btn = Buttons((size[0] - width) / 2, size[1] - 200, width, height, "Back")
     btn.draw()
     levels_btns.append(btn)
 
 
-def background_image(name, size):
-    image = pygame.image.load(f"Backgrounds/{name}")
-    image = pygame.transform.scale(image, size)
-    screen.blit(image, (0, 0))
-
-
 class Buttons:
-    def __init__(self, x, y, width, height, scr, text=""):
+    def __init__(self, x, y, width, height, text=""):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
-        self.scr = scr
+        self.scr = screen
         self.col = (38, 166, 147)
         self.text = text
 
