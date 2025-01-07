@@ -1,4 +1,5 @@
-import pygame
+import pygame.mouse
+
 from Vsyakya import *
 from Level_1 import *
 
@@ -18,35 +19,30 @@ def running_mw():
             if event.type == pygame.MOUSEBUTTONUP:
                 flag = 0
                 x_pos, y_pos = pygame.mouse.get_pos()
-                if main_btns[0].x <= x_pos <= (main_btns[0].x + main_btns[0].width):
-                    if main_btns[0].y <= y_pos <= (main_btns[0].y + main_btns[0].height):
-                        running = False
-                    if main_btns[-1].y <= y_pos <= (main_btns[-1].y + main_btns[-1].height):
-                        running = False
-                        flag_exit = 1
-                        flag = 1
+                if (main_btns[0].x <= x_pos <= (main_btns[0].x + main_btns[0].width) and
+                        (main_btns[0].y <= y_pos <= (main_btns[0].y + main_btns[0].height))):
+                    running = False
+                elif (main_btns[-1].x <= x_pos <= (main_btns[-1].x + main_btns[-1].width) and
+                      main_btns[-1].y <= y_pos <= (main_btns[-1].y + main_btns[-1].height)):
+                    running = False
+                    flag_exit = 1
+                    flag = 1
                 else:
                     for elem in main_btns:
                         elem.draw()
             if flag == 0:
                 if event.type == pygame.MOUSEMOTION:
-                    x_pos, y_pos = pygame.mouse.get_pos()
                     for elem in main_btns:
-                        if elem.x <= x_pos <= elem.x + elem.width and elem.y <= y_pos <= elem.y + elem.height:
-                            elem.change_col_mou()
-                        else:
-                            elem.draw()
+                        elem.change_col_mou()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 flag = 1
-                x_pos, y_pos = pygame.mouse.get_pos()
                 for elem in main_btns:
-                    if elem.x <= x_pos <= elem.x + elem.width and elem.y <= y_pos <= elem.y + elem.height:
-                        elem.change_col_push()
+                    elem.change_col_push()
         pygame.display.flip()
     if flag_exit == 1:
         pygame.quit()
     else:
-        blackout(1)
+        blackout(5, 1)
 
 
 def running_sw():
@@ -62,37 +58,33 @@ def running_sw():
             if event.type == pygame.MOUSEBUTTONUP:
                 flag = 0
                 x_pos, y_pos = pygame.mouse.get_pos()
-                if levels_btns[0].x <= x_pos <= (levels_btns[0].x + levels_btns[0].width):
-                    if levels_btns[0].y <= y_pos <= (levels_btns[0].y + levels_btns[0].height):
-                        running = False
-                        lvl_switch = 1
-                if levels_btns[-1].x <= x_pos <= (levels_btns[-1].x + levels_btns[-1].width):
-                    if levels_btns[-1].y <= y_pos <= (levels_btns[-1].y + levels_btns[-1].height):
-                        running = False
+                if (levels_btns[0].x <= x_pos <= (levels_btns[0].x + levels_btns[0].width) and
+                        levels_btns[0].y <= y_pos <= (levels_btns[0].y + levels_btns[0].height)):
+                    running = False
+                    lvl_switch = 1
+                elif (levels_btns[-1].x <= x_pos <= (levels_btns[-1].x + levels_btns[-1].width) and
+                        levels_btns[-1].y <= y_pos <= (levels_btns[-1].y + levels_btns[-1].height)):
+                    running = False
+                else:
+                    for elem in levels_btns:
+                        elem.draw()
             if flag == 0:
                 if event.type == pygame.MOUSEMOTION:
-                    x_pos, y_pos = pygame.mouse.get_pos()
                     for elem in levels_btns:
-                        if elem.x <= x_pos <= elem.x + elem.width and elem.y <= y_pos <= elem.y + elem.height:
-                            elem.change_col_mou()
-                        else:
-                            elem.draw()
+                        elem.change_col_mou()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 flag = 1
-                x_pos, y_pos = pygame.mouse.get_pos()
                 for elem in levels_btns:
-                    if elem.x <= x_pos <= elem.x + elem.width and elem.y <= y_pos <= elem.y + elem.height:
-                        elem.change_col_push()
+                    elem.change_col_push()
         pygame.display.flip()
     if lvl_switch == 0:
-        blackout(0)
+        blackout(5, 0)
     elif lvl_switch == 1:
-        blackout(2)
+        blackout(5, 2)
 
 
-def blackout(k):
+def blackout(fade_speed, k):
     alpha = 0
-    fade_speed = 5
     overlay = pygame.Surface(size)
     overlay.fill("black")
     while screen.get_at((0, 0)) != (0, 0, 0):
@@ -166,22 +158,28 @@ class Buttons:
         self.scr.blit(text, text_rect)
 
     def change_col_mou(self):
-        pygame.draw.rect(self.scr, (self.col[0], self.col[1] + 30, self.col[2]),
-                         (self.x, self.y, self.width, self.height))
-        pygame.draw.rect(self.scr, (self.col[0], self.col[1] - 20, self.col[2]),
-                         (self.x, self.y, self.width, self.height), 7)
-        text = font.render(self.text, True, "black")
-        text_rect = text.get_rect(center=(self.x + self.width // 2, self.y + self.height // 2))
-        self.scr.blit(text, text_rect)
+        x_pos, y_pos = pygame.mouse.get_pos()
+        if self.x <= x_pos <= self.x + self.width and self.y <= y_pos <= self.y + self.height:
+            pygame.draw.rect(self.scr, (self.col[0], self.col[1] + 30, self.col[2]),
+                             (self.x, self.y, self.width, self.height))
+            pygame.draw.rect(self.scr, (self.col[0], self.col[1] - 20, self.col[2]),
+                             (self.x, self.y, self.width, self.height), 7)
+            text = font.render(self.text, True, "black")
+            text_rect = text.get_rect(center=(self.x + self.width // 2, self.y + self.height // 2))
+            self.scr.blit(text, text_rect)
+        else:
+            self.draw()
 
     def change_col_push(self):
-        pygame.draw.rect(self.scr, (self.col[0], self.col[1] - 30, self.col[2]),
-                         (self.x, self.y, self.width, self.height))
-        pygame.draw.rect(self.scr, (self.col[0], self.col[1] - 80, self.col[2]),
-                         (self.x, self.y, self.width, self.height), 7)
-        text = font.render(self.text, True, "black")
-        text_rect = text.get_rect(center=(self.x + self.width // 2, self.y + self.height // 2))
-        self.scr.blit(text, text_rect)
+        x_pos, y_pos = pygame.mouse.get_pos()
+        if self.x <= x_pos <= self.x + self.width and self.y <= y_pos <= self.y + self.height:
+            pygame.draw.rect(self.scr, (self.col[0], self.col[1] - 30, self.col[2]),
+                             (self.x, self.y, self.width, self.height))
+            pygame.draw.rect(self.scr, (self.col[0], self.col[1] - 80, self.col[2]),
+                             (self.x, self.y, self.width, self.height), 7)
+            text = font.render(self.text, True, "black")
+            text_rect = text.get_rect(center=(self.x + self.width // 2, self.y + self.height // 2))
+            self.scr.blit(text, text_rect)
 
 
 if __name__ == "__main__":

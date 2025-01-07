@@ -1,5 +1,6 @@
 import pygame
 from Vsyakya import background_image_levels
+from MAIN import Buttons
 
 platforms_rect = list()
 platforms_tri = list()
