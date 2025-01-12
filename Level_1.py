@@ -63,6 +63,7 @@ def floor_tri(p1, p2, p3, k, height, screen, move_screen):
 
 
 def game_run_1(screen):
+    from MAIN import blackout
     size = (pygame.display.Info().current_w, pygame.display.Info().current_h)
     background_image_levels("Level_1.1_Back.jpg", size, screen)
     screen_for_move = pygame.Surface(size)
@@ -77,6 +78,5 @@ def game_run_1(screen):
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    from MAIN import blackout
                     blackout(20, -1, screen, size)
         pygame.display.flip()

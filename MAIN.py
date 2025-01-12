@@ -2,16 +2,15 @@ from Vsyakya import *
 from Level_1 import game_run_1
 from Back_screen import run_back_screen
 
-
 main_btns = list()
 levels_btns = list()
 
 
-def running_mw():
+def running_mw(screen, size):
     flag_exit = 0
     flag = 0
     background_image_menu("MainBack.jpg", size, screen)
-    srart_btns()
+    srart_btns(screen, size)
     running = True
     while running:
         for event in pygame.event.get():
@@ -38,18 +37,18 @@ def running_mw():
                 for elem in main_btns:
                     elem.change_col_push()
         pygame.display.flip()
-    if flag_exit == 1:
+    if flag_exit:
         pygame.quit()
     else:
         blackout(5, 1, screen, size)
 
 
-def running_sw():
+def running_sw(screen, size):
     lvl_switch = 0
     flag = 0
     background_image_menu("StartBack.jpg", size, screen)
-    lvls_btns(screen)
-    lvls_back_btn(screen)
+    lvls_btns(screen, size)
+    lvls_back_btn(screen, size)
     running = True
     while running:
         for event in pygame.event.get():
@@ -82,26 +81,34 @@ def running_sw():
 
 
 def blackout(fade_speed, k, screen, size):
+    kirkorov = [screen.get_at((x, size[1] // 2)) for x in range(size[0])]
     alpha = 0
     overlay = pygame.Surface(size)
-    while screen.get_at((0, 0)) != (0, 0, 0):
+    while any(is_black(x) for x in kirkorov):
         overlay.set_alpha(alpha)
         screen.blit(overlay, (0, 0))
         if alpha < 255:
             alpha += fade_speed
         pygame.display.flip()
         pygame.time.delay(30)
+        kirkorov = [screen.get_at((x, size[1] // 2)) for x in range(size[0])]
     if k == 0:
-        running_mw()
+        running_mw(screen, size)
     elif k == 1:
-        running_sw()
+        running_sw(screen, size)
     elif k == 2:
         game_run_1(screen)
     elif k == -1:
         run_back_screen(screen)
 
 
-def srart_btns():
+def is_black(dot):
+    if dot == (0, 0, 0):
+        return False
+    return True
+
+
+def srart_btns(screen, size):
     width, height = 300, 100
     x = (size[0] - 300) / 2
     gap = (size[1] - 100 * 3) / 6
@@ -117,7 +124,7 @@ def srart_btns():
         main_btns.append(btn)
 
 
-def lvls_btns(screen):
+def lvls_btns(screen, size):
     k = 0
     for y in range(2):
         for x in range(5):
@@ -130,7 +137,7 @@ def lvls_btns(screen):
             levels_btns.append(btn)
 
 
-def lvls_back_btn(screen):
+def lvls_back_btn(screen, size):
     width, height = 450, 100
     btn = Buttons((size[0] - width) / 2, size[1] - 200, width, height, screen, "Back")
     btn.draw()
@@ -185,4 +192,4 @@ if __name__ == "__main__":
     pygame.init()
     size = (pygame.display.Info().current_w, pygame.display.Info().current_h)
     screen = pygame.display.set_mode(size)
-    running_mw()
+    running_mw(screen, size)
