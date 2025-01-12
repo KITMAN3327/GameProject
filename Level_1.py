@@ -68,10 +68,10 @@ def game_run_1(screen):
     background_image_levels("Level_1.1_Back.jpg", size, screen)
     screen_for_move = pygame.Surface(size)
     screen_for_move.fill("black")
-    # floor_rect(0, size[1] * 7 / 10, size[0], size[1] * 3 / 10, screen, screen_for_move)
-    floor_rect(0, size[1] * (7 / 10), size[0] * (1 / 20), size[1] * (3 / 10), screen, screen_for_move)
-    floor_tri((size[0] * (1 / 20), size[1] * (7 / 10)), (size[0] * (1 / 20), size[1] * (8 / 10)),
-              (size[0] * (2 / 20), size[1] * (8 / 10)), 1, size[1] * (2 / 10), screen, screen_for_move)
+    floor_rect(0, size[1] * 7 / 10, size[0], size[1] * 3 / 10, screen, screen_for_move)
+    # floor_rect(0, size[1] * (7 / 10), size[0] * (1 / 20), size[1] * (3 / 10), screen, screen_for_move)
+    # floor_tri((size[0] * (1 / 20), size[1] * (7 / 10)), (size[0] * (1 / 20), size[1] * (8 / 10)),
+    #           (size[0] * (2 / 20), size[1] * (8 / 10)), 1, size[1] * (2 / 10), screen, screen_for_move)
     # screen.blit(screen_for_move, (0, 0))
     paused = False
     while not paused:

@@ -132,7 +132,11 @@ def lvls_btns(screen, size):
             width, height = 150, 100
             gap_x = (size[0] - width * 5) / 8
             gap_y = (size[1] - height * 3 - 75) / 5
-            btn = Buttons((x + 2) * gap_x + x * width, (y + 2) * gap_y + y * height - 70, width, height, screen, str(k))
+            if k != 1:
+                txt = "Locked"
+            else:
+                txt = str(k)
+            btn = Buttons((x + 2) * gap_x + x * width, (y + 2) * gap_y + y * height - 70, width, height, screen, txt)
             btn.draw()
             levels_btns.append(btn)
 
